@@ -9,7 +9,7 @@ public class Inventory{
 		guitars=new LinkedList();
 	}
 	
-	public void addGuitar(String serialNumber,double price,String builder,String model,String type,String backWood,String topWood){
+	public void addGuitar(String serialNumber,double price,Builder builder,String model,Type type,Wood backWood,Wood topWood){
 		Guitar guitar=new Guitar(serialNumber,price,builder,model,type,backWood,topWood);
 		guitars.add(guitar);
 	}
@@ -23,28 +23,25 @@ public class Inventory{
 		return null;
 	}
 	
-	public Guitar searchGuitar(Guitar guitarToSearch){
+	public List searchGuitar(Guitar guitarToSearch){
+		List matchingGuitars = new LinkedList();
 		for(Iterator i=guitars.iterator(); i.hasNext(); ){
 			Guitar guitar=(Guitar)i.next();
 				//Ignore serialNumber
 				//Ignore price
-			String builder=guitarToSearch.getBuilder();
-			if(builder==null || builder.equals("") || ( !builder.equals(guitar.getBuilder()) ) )
+			if((Builder)guitar.getBuilder() != (Builder)guitarToSearch.getBuilder() )
 				continue;
-			String model=guitarToSearch.getModel();
-			if(model==null || model.equals("") || ( !model.equals(guitar.getModel()) ) )
+			String model=guitarToSearch.getModel().toLowerCase() ;
+			if(model==null || model.equals("") || ( !model.equals(guitar.getModel().toLowerCase() ) ) )
 				continue;
-			String type=guitarToSearch.getType();
-			if(type==null || type.equals("") || ( !type.equals(guitar.getType()) ) )
+			if((Type)guitar.getType() != (Type)guitarToSearch.getType() )
 				continue;
-			String backWood=guitarToSearch.getBackWood();
-			if(backWood==null || backWood.equals("") || ( !backWood.equals(guitar.getBackWood()) ) )
+			if((Wood)guitar.getBackWood() != (Wood)guitarToSearch.getBackWood() )
 				continue;
-			String topWood=guitarToSearch.getTopWood();
-			if(topWood==null || topWood.equals("") || ( !topWood.equals(guitar.getTopWood()) ) )
-				continue;		
-			return guitar;
+			if((Wood)guitar.getTopWood() != (Wood)guitarToSearch.getTopWood() )
+				continue;
+			matchingGuitars.add(guitar);
 		}
-		return null;
+		return matchingGuitars;
 	}
 }
