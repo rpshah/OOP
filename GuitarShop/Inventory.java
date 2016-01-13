@@ -3,22 +3,27 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 public class Inventory{
-	private List guitars;
+	private List inventory;
 	
 	public Inventory(){
-		guitars=new LinkedList();
+		inventory=new LinkedList();
 	}
 	
-	public void addGuitar(String serialNumber,double price,Builder builder,String model,Type type,int numStrings,Wood backWood,Wood topWood){
-		GuitarSpec guitarSpec=new GuitarSpec(builder,model,type,numStrings,backWood,topWood);
-		Guitar guitar=new Guitar(serialNumber,price,guitarSpec);
-		guitars.add(guitar);
+	public void addInstrument(String serialNumber,double price,InstrumentSpec spec){
+		Instrument instrument=null;
+		if( (spec instanceof GuitarSpec) ){
+			instrument = new Guitar(serialNumber,price,(GuitarSpec)spec);
+		}
+		else if( (spec instanceof MandolinSpec) ){
+			instrument = new Mandolin(serialNumber,price,(MandolinSpec)spec);
+		}
+		inventory.add(instrument);
 	}
-	public Guitar getGuitar(String serialNumber){
-		for(Iterator i=guitars.iterator();i.hasNext(); ){
-			Guitar guitar=(Guitar)i.next();
-			if(guitar.getSerialNumber().equals(serialNumber)){
-				return guitar;
+	public Instrument getInstrument(String serialNumber){
+		for(Iterator i=inventory.iterator();i.hasNext(); ){
+			Instrument instrument=(Instrument)i.next();
+			if(instrument.getSerialNumber().equals(serialNumber)){
+				return instrument;
 			}
 		}
 		return null;
@@ -26,13 +31,25 @@ public class Inventory{
 	
 	public List searchGuitar(GuitarSpec guitarToSearch){
 		List matchingGuitars = new LinkedList();
-		for(Iterator i=guitars.iterator(); i.hasNext(); ){
-			Guitar guitar=(Guitar)i.next();
+		for(Iterator i=inventory.iterator(); i.hasNext(); ){
+			Instrument guitar=(Instrument)i.next();
 				//Ignore serialNumber
 				//Ignore price
-			if(guitar.getGuitarSpec().matches(guitarToSearch))
+			if(guitar.getSpec().matches(guitarToSearch))
 				matchingGuitars.add(guitar);
 		}
 		return matchingGuitars;
+	}
+
+	public List searchMandolin(MandolinSpec mandolinToSearch){
+		List matchingMandolins = new LinkedList();
+		for(Iterator i=inventory.iterator(); i.hasNext(); ){
+			Instrument mandolin=(Instrument)i.next();
+				//Ignore serialNumber
+				//Ignore price
+			if(mandolin.getSpec().matches(mandolinToSearch))
+				matchingMandolins.add(mandolin);
+		}
+		return matchingMandolins;
 	}
 }
