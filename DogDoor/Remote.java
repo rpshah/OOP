@@ -1,7 +1,6 @@
-import java.util.Timer;
-import java.util.TimerTask;
-
+//Can be used when a barkRecognizer is not working...
 public class Remote{
+	
 	DogDoor door;
 	public Remote(DogDoor door){
 		this.door=door;
@@ -14,14 +13,6 @@ public class Remote{
 		}
 		else{
 			door.open();
-
-			final Timer timer=new Timer();
-			timer.schedule(new TimerTask(){
-								public void run(){
-									door.close();
-									timer.cancel();
-								}
-						   },5000);
 		}
 	}
 }
